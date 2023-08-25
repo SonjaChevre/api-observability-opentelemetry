@@ -1,0 +1,45 @@
+{
+    "name": "httpbin cache",
+    "api_id": "2",
+    "org_id": "default",
+    "active": true,
+    "use_keyless": true,
+    "definition": {
+        "location": "header",
+        "key": "version"
+    },
+    "version_data": {
+        "not_versioned": false,
+        "default_version": "Default",
+        "versions": {
+            "Default": {
+                "name": "1.1"
+            },
+            "1.2": {
+                "name": "1.2",
+                "use_extended_paths": true,
+                "extended_paths": {
+                    "cache": [
+                        "/delay"
+                    ],
+                    "persist_graphql": []
+                }
+            }
+        }
+    },
+    "cache_options": {
+        "cache_timeout": 60,
+        "enable_cache": true,
+        "cache_all_safe_requests": false,
+        "cache_response_codes": [],
+        "enable_upstream_cache_control": false,
+        "cache_control_ttl_header": "",
+        "cache_by_headers": []
+    },
+    "proxy": {
+        "listen_path": "/httpbin-cache/",
+        "target_url": "http://host.docker.internal:8081/",
+        "strip_listen_path": true,
+        "preserve_host_header": true
+    }
+}

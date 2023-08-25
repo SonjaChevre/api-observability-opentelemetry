@@ -1,0 +1,25 @@
+{
+    "name": "rolldice",
+    "api_id": "7",
+    "org_id": "default",
+    "active": true,
+    "use_keyless": true,
+    "definition": {
+        "location": "header",
+        "key": "version"
+    },
+    "version_data": {
+        "not_versioned": true,
+        "versions": {
+            "Default": {
+                "name": "Default"
+            }
+        }
+    },
+    "proxy": {
+        "listen_path": "/rolldice/",
+        "target_url": "http://host.docker.internal:8091/rolldice",
+        "strip_listen_path": true,
+        "preserve_host_header": true
+    }
+}

@@ -1,0 +1,3 @@
+data/*
+deployments/backend/node_modules/*
+deployments/frontend/node_modules/*
