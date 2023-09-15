@@ -5,6 +5,7 @@
     "use_keyless": true,
     "use_oauth2": false,
     "use_openid": false,
+    "detailed_tracing": true,
     "openid_options": {
         "providers": [],
         "segregate_by_client": false

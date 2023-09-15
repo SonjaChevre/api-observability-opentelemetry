@@ -3,6 +3,7 @@
       "jwt_issued_at_validation_skew": 0,
       "upstream_certificates": {},
       "use_keyless": true,
+      "detailed_tracing": true,
       "enable_coprocess_auth": false,
       "base_identity_provided_by": "",
       "custom_middleware": {

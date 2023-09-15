@@ -4,6 +4,7 @@
     "org_id": "default",
     "active": true,
     "use_keyless": true,
+    "detailed_tracing": true,
     "definition": {
         "location": "header",
         "key": "version"

@@ -2,6 +2,7 @@
     "api_id": "4",
     "name": "httpbin rate limit",
     "use_keyless": true,
+    "detailed_tracing": true,
     "version_data": {
         "not_versioned": true,
         "default_version": "",

@@ -6,6 +6,7 @@
     "protocol": "",
     "enable_proxy_protocol": false,
     "use_keyless": true,
+    "detailed_tracing": true,
     "use_oauth2": false,
     "use_openid": false,
     "openid_options": {
