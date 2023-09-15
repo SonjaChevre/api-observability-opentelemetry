@@ -3,7 +3,7 @@ services:
   
   # Tyk Gateway
   tyk-gateway:
-    image: tykio/tyk-gateway:v5.2.0-rc2
+    image: tykio/tyk-gateway:v5.2.0
     ports:
       - 8080:8080
     networks:
@@ -40,9 +40,9 @@ services:
     ports:
       - "8090:8090"
 
-  backend:
-    image: nodejs-backend
-    build: ./deployments/backend 
+  reservation:
+    image: nodejs-reservation
+    build: ./deployments/reservation 
     ports:
       - "8091:8091"
 

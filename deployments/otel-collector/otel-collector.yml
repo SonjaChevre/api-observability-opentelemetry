@@ -14,8 +14,8 @@ processors:
         statements:
           - replace_all_patterns(attributes, "value", "[^a-zA-Z0-9]", "_")
 exporters:
-  jaeger:
-    endpoint: jaeger-all-in-one:14250
+  otlp:
+    endpoint: jaeger-all-in-one:4317
     tls:
       insecure: true
   prometheus:
@@ -41,7 +41,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [jaeger, spanmetrics]
+      exporters: [otlp, spanmetrics]
     metrics:
       receivers: [spanmetrics]
       processors: [transform]

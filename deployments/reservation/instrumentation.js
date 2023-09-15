@@ -31,7 +31,7 @@ const sdk = new opentelemetry.NodeSDK({
       new ExpressInstrumentation()
       ],
   resource: new Resource({
-        [SemanticResourceAttributes.SERVICE_NAME]: 'backend',
+        [SemanticResourceAttributes.SERVICE_NAME]: 'reservation',
       }),
 });
 sdk.start();
