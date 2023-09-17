@@ -1,8 +1,11 @@
 {
     "api_id": "4",
     "name": "httpbin rate limit",
-    "use_keyless": true,
+    "use_keyless": false,
     "detailed_tracing": true,
+    "auth": {
+        "auth_header_name": "authorization"
+    },
     "version_data": {
         "not_versioned": true,
         "default_version": "",
