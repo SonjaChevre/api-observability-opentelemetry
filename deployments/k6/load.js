@@ -3,134 +3,68 @@ import { sleep } from 'k6';
 import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
 var testDuraction = '1m';
-var authKey = "";
 
+const params = {
+  headers: { 'Content-Type': 'application/json', 'x-tyk-authorization': '28d220fd77974a4facfb07dc1e49c2aa', 'Response-Type': 'application/json' },
+  responseType: 'text'
+};
+
+// 4 users with different API calls, all successfull
+// 1 user with rate-limiting issue
+// 1 user doesn't have permission for API version 2
+// 1 user with lots of 404 errors
 
 export function setup() {
-  
+
+  var alias1 = "user102";
+  var alias2 = "user104";
+  var users = [];
+
+  var data = '{"alias": "' + alias1 
+      + '", "expires": -1, "access_rights": { '
+      + '"1": { "api_id": "1","api_name": "flight information","versions": ["Default"]}'
+      + '"2": { "api_id": "2","api_name": "baggage tracking","versions": ["Default"]}'
+      + '"3": { "api_id": "3","api_name": "parking reservation","versions": ["Default"]}'
+    + '}}' ;
+
+
+  let res = http.post("http://host.docker.internal:8080/tyk/keys/create", data, params);
+
+  var authKey1 = res.json().key;
+  users[0] = [alias1, authKey1];
+
+  return { users };
 }
 
 
 export const options = {
   discardResponseBodies: false,
   scenarios: {
-    httpbin_ratelimit: {
+    user_102: {
       executor: 'constant-arrival-rate',
-      exec: 'test_httpbin_ratelimit',
-      rate: 30,
+      exec: 'user_102',
+      rate: 3,
       timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
       duration: testDuraction,
-      preAllocatedVUs: 2, // how large the initial pool of VUs would be
-      maxVUs: 2, // if the preAllocatedVUs are not enough, we can initialize more
-    },
-
-    httpbin_unstable: {
-      executor: 'constant-arrival-rate',
-      exec: 'test_httpbin_unstable',
-      rate: 26,
-      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
-      duration: testDuraction,
-      preAllocatedVUs: 2, // how large the initial pool of VUs would be
-      maxVUs: 2, // if the preAllocatedVUs are not enough, we can initialize more
-    },
-
-    httpbin_cache: {
-      executor: 'constant-arrival-rate',
-      exec: 'test_httpbin_delay',
-      rate: 10,
-      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
-      duration: testDuraction,
-      preAllocatedVUs: 3, // how large the initial pool of VUs would be
-      maxVUs: 3, // if the preAllocatedVUs are not enough, we can initialize more
-    },
-
-    httpbin_status: {
-      executor: 'constant-arrival-rate',
-      exec: 'test_httpbin_status',
-      rate: 50,
-      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
-      duration: testDuraction,
-      preAllocatedVUs: 2, // how large the initial pool of VUs would be
-      maxVUs: 4, // if the preAllocatedVUs are not enough, we can initialize more
-    },
-
-    httpbin_method_transform: {
-      executor: 'constant-arrival-rate',
-      exec: 'test_httpbin_method_transform',
-      rate: 10,
-      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
-      duration: testDuraction,
-      preAllocatedVUs: 2, // how large the initial pool of VUs would be
-      maxVUs: 4, // if the preAllocatedVUs are not enough, we can initialize more
-    },
-
-    httpbin_auth: {
-      executor: 'constant-arrival-rate',
-      exec: 'test_httpbin_auth',
-      rate: 35,
-      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
-      duration: testDuraction,
-      preAllocatedVUs: 2, // how large the initial pool of VUs would be
-      maxVUs: 4, // if the preAllocatedVUs are not enough, we can initialize more
-    },
-
-    rolldice: {
-      executor: 'constant-arrival-rate',
-      exec: 'test_rolldice',
-      rate: 10,
-      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
-      duration: testDuraction,
-      preAllocatedVUs: 2, // how large the initial pool of VUs would be
-      maxVUs: 4, // if the preAllocatedVUs are not enough, we can initialize more
-    },
+      preAllocatedVUs: 1, // how large the initial pool of VUs would be
+      maxVUs: 1, // if the preAllocatedVUs are not enough, we can initialize more
+    }
 
   }
 }
 
-export function test_httpbin_ratelimit() {
-  http.get('http://host.docker.internal:8080/httpbin-ratelimit/get');
+export default function (data) {
+  // console.log("default function: " + JSON.stringify(data.authKey));
 }
 
-export function test_httpbin_unstable() {
-  http.get('http://host.docker.internal:8080/httpbin-unstable/');
-}
-
-export function test_httpbin_delay() {
-
-  const expr = randomIntBetween(1, 3);
+export function user_102(data) {
 
   const params = {
-    headers: { 'version': '1.2' }
+    headers: { 'authorization': data.users[0][1] }
   };
 
-  if (expr == 1) http.get('http://host.docker.internal:8080/httpbin-cache/delay/3');
-  else http.get('http://host.docker.internal:8080/httpbin-cache/delay/3', params);
-}
+  http.get('http://host.docker.internal:8080/baggage-tracking/get', params);
+  http.get('http://host.docker.internal:8080/flight-information/get', params);
+  http.get('http://host.docker.internal:8080//parking-reservation/get', params);
 
-export function test_httpbin_status() {
-  http.get('http://host.docker.internal:8080/httpbin-status/200');
-  
-  const expr = randomIntBetween(1, 10);
-
-  if (expr == 1) http.get('http://host.docker.internal:8080/httpbin-status/404');
-  else if (expr == 2) http.get('http://host.docker.internal:8080/httpbin-status/500');
-  else if (expr == 3) http.get('http://host.docker.internal:8080/httpbin-status/503');
-
-}
-
-export function test_httpbin_method_transform() {
-  http.get('http://host.docker.internal:8080/httpbin-method-transform/delete');
-}
-
-
-export function test_httpbin_auth() {
-  const params = {
-    headers: { 'Authorization': authKey }
-  };
-
-  http.get('http://host.docker.internal:8080/httpbin-auth/', params);
-}
-
-export function test_rolldice() {
-  http.get('http://host.docker.internal:8090');
 }
