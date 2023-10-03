@@ -1,5 +1,5 @@
 {
-    "name": "httpbin auth",
+    "name": "flight information",
     "api_id": "1",
     "org_id": "default",
     "active": true,
@@ -21,7 +21,7 @@
         }
     },
     "proxy": {
-        "listen_path": "/httpbin-auth/",
+        "listen_path": "/flight-information/",
         "target_url": "http://host.docker.internal:8081/",
         "strip_listen_path": true,
         "preserve_host_header": true
