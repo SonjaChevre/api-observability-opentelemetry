@@ -1,3 +1,2 @@
 data/*
-deployments/backend/node_modules/*
-deployments/frontend/node_modules/*
+deployments/reservation/node_modules/*

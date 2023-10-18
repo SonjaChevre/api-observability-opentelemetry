@@ -933,7 +933,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by (tyk_api_apikey_alias) (\n  rate(calls_total{span_kind=\"SPAN_KIND_SERVER\",tyk_api_name=~\"$tykapiname\"}[1m])\n)",
+          "expr": "sum by (tyk_api_apikey_alias) (\n  rate(calls_total{span_kind=\"SPAN_KIND_SERVER\",tyk_api_name=~\"$tykapiname\", service_name=\"tyk_gateway\"}[1m])\n)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1038,7 +1038,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by (tyk_api_apikey_alias) (\n  rate(calls_total{span_kind=\"SPAN_KIND_SERVER\",tyk_api_name=~\"$tykapiname\",http_status_code=~\"[4-5][0-9]{2}\"}[1m])\n)",
+          "expr": "sum by (tyk_api_apikey_alias) (\n  rate(calls_total{span_kind=\"SPAN_KIND_SERVER\",tyk_api_name=~\"$tykapiname\",http_status_code=~\"[4-5][0-9]{2}\",service_name=\"tyk_gateway\"}[1m])\n)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1256,7 +1256,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by (tyk_gw_id) (\n  rate(calls_total{span_kind=\"SPAN_KIND_SERVER\",tyk_api_name=~\"$tykapiname\"}[1m])\n)",
+          "expr": "sum by (tyk_gw_id) (\n  rate(calls_total{span_kind=\"SPAN_KIND_SERVER\",tyk_api_name=~\"$tykapiname\", service_name=\"tyk_gateway\"}[1m])\n)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1311,6 +1311,6 @@
   "timezone": "",
   "title": "API Observability",
   "uid": "TMChT834k",
-  "version": 9,
+  "version": 1,
   "weekStart": ""
 }

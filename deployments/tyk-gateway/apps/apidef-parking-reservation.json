@@ -22,7 +22,7 @@
     },
     "proxy": {
         "listen_path": "/parking-reservation/",
-        "target_url": "http://host.docker.internal:8081/",
+        "target_url": "http://host.docker.internal:8091/",
         "strip_listen_path": true,
         "preserve_host_header": true
     }

@@ -6,6 +6,12 @@ const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-expre
 const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
+// Require dependencies
+const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
+
+// For troubleshooting, set the log level to DiagLogLevel.DEBUG
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
+
 
 // Receiving service
 const { context, propagation, trace } = require('@opentelemetry/api');
@@ -34,4 +40,6 @@ const sdk = new opentelemetry.NodeSDK({
         [SemanticResourceAttributes.SERVICE_NAME]: 'reservation',
       }),
 });
+
 sdk.start();
+

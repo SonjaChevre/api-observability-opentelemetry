@@ -73,7 +73,7 @@ export const options = {
       timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
       duration: testDuraction,
       preAllocatedVUs: 1, // how large the initial pool of VUs would be
-      maxVUs: 5, // if the preAllocatedVUs are not enough, we can initialize more
+      maxVUs: 1, // if the preAllocatedVUs are not enough, we can initialize more
     },
     user_104: {
       executor: 'constant-arrival-rate',
@@ -82,7 +82,7 @@ export const options = {
       timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
       duration: testDuraction,
       preAllocatedVUs: 1, // how large the initial pool of VUs would be
-      maxVUs: 5, // if the preAllocatedVUs are not enough, we can initialize more
+      maxVUs: 1, // if the preAllocatedVUs are not enough, we can initialize more
     },
     user_105: {
       executor: 'constant-arrival-rate',
@@ -91,7 +91,7 @@ export const options = {
       timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
       duration: testDuraction,
       preAllocatedVUs: 1, // how large the initial pool of VUs would be
-      maxVUs: 5, // if the preAllocatedVUs are not enough, we can initialize more
+      maxVUs: 1, // if the preAllocatedVUs are not enough, we can initialize more
     }
 
   }
@@ -109,7 +109,7 @@ export function user_102(data) {
 
   http.get('http://host.docker.internal:8080/baggage-tracking/get', params);
   http.get('http://host.docker.internal:8080/flight-information/get', params);
-  http.get('http://host.docker.internal:8080/parking-reservation/get', params);
+  http.get('http://host.docker.internal:8080/parking-reservation/check-availability/', params);
 
 }
 

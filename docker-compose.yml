@@ -34,12 +34,6 @@ services:
     networks:
       - tyk
 
-  frontend:
-    image: nodejs-frontend
-    build: ./deployments/frontend 
-    ports:
-      - "8090:8090"
-
   reservation:
     image: nodejs-reservation
     build: ./deployments/reservation 
