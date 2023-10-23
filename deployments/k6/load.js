@@ -18,6 +18,7 @@ export function setup() {
   var alias1 = "mobile-app";
   var alias2 = "website";
   var alias3 = "screen-app";
+  var alias4 = "trial-rate-limited";
 
   var users = [];
 
@@ -58,6 +59,19 @@ export function setup() {
   users[2] = [alias3, authKey3];
 
 
+  var data4 = '{"alias": "' + alias4 
+      + '", "expires": -1, "access_rights": { '
+      + ' "1": { "api_id": "1", "api_name": "flight information","versions": ["Default"]},'
+      + ' "2": { "api_id": "2", "api_name": "baggage tracking","versions": ["Default"]},'
+      + ' "3": { "api_id": "3", "api_name": "parking reservation","versions": ["Default"]}'
+    + '}}' ;
+
+  res = http.post("http://host.docker.internal:8080/tyk/keys/create", data4, params);
+
+  var authKey4 = res.json().key;
+  users[3] = [alias4, authKey4];
+  
+
 
   return { users };
 }
@@ -87,7 +101,16 @@ export const options = {
     user_105: {
       executor: 'constant-arrival-rate',
       exec: 'user_105',
-      rate: 25,
+      rate: 1,
+      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
+      duration: testDuraction,
+      preAllocatedVUs: 1, // how large the initial pool of VUs would be
+      maxVUs: 1, // if the preAllocatedVUs are not enough, we can initialize more
+    },
+    user_trial_rate_limited: {
+      executor: 'constant-arrival-rate',
+      exec: 'user_106',
+      rate: 1,
       timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
       duration: testDuraction,
       preAllocatedVUs: 1, // how large the initial pool of VUs would be
@@ -137,3 +160,17 @@ export function user_105(data) {
   http.get('http://host.docker.internal:8080/parking-reservation/get', params);
 
 }
+
+
+export function user_106(data) {
+
+  const params = {
+    headers: { 'authorization': data.users[3][1] }
+  };
+
+  http.get('http://host.docker.internal:8080/baggage-tracking/status/500', params);
+  http.get('http://host.docker.internal:8080/flight-information/status/500', params);
+  http.get('http://host.docker.internal:8080/parking-reservation/get', params);
+
+}
+

@@ -3,7 +3,7 @@ services:
   
   # Tyk Gateway
   tyk-gateway:
-    image: tykio/tyk-gateway:v5.2.0
+    image: tykio/tyk-gateway:v5.2.1
     ports:
       - 8080:8080
     networks:
