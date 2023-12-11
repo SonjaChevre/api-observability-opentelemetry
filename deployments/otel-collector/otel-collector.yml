@@ -30,9 +30,7 @@ connectors:
       - name: http.status_code
       - name: tyk.api.name
       - name: tyk.gw.id
-      - name: tyk.api.version
       - name: service.version
-      - name: tyk.api.apikey.alias
 service:
   pipelines:
     traces:

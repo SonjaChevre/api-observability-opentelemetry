@@ -51,8 +51,3 @@ Remove the services
 docker compose down
 ```
 
-## TODO
-
-* time in gw v/s time in outstream v/s total time
-* use cases: improve authentication and add custom plug-in with custom spans
-

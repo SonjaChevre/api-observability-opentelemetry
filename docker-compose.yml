@@ -49,8 +49,7 @@ services:
       - tyk
     ports:
       - "16686:16686"
-      - "14268"
-      - "14250"
+      - "4317:4317"
 
   # Collector
   otel-collector:
