@@ -1,3 +1,6 @@
+Use this version instead: https://github.com/TykTechnologies/demo-api-observability-opentelemetry
+
+
 # API Observability with OpenTelemetry
 
 ## About
